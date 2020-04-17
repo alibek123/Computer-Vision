@@ -23,23 +23,10 @@ def addApp():
 
 def drawEdges(image):
     img = cv2.imread(image)
-    # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     cv2.imshow("Your Photo", img)
     img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
     img = cv2.Canny(img, 0, 200)
     cv2.imshow("Edged photo", img)
-
-
-def drawFeatures(image):
-    img = cv2.imread(image)
-    img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-    minHessian = 400
-    #sift = cv2.xfeatures2d.SIFT_create()
-    detector = cv2.xfeatures2d_SURF.create(hessianThreshold=minHessian)
-    keypoints = detector.detect(img)
-    img_keypoints = np.empty((img.shape[0], img.shape[1], 3), dtype=np.uint8)
-    cv2.drawKeypoints(img, keypoints, img_keypoints)
-    cv2.imshow("Photo features", img)
 
 
 def detect_img_object(image):
