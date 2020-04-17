@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-# import cv2
+import cv2
 import tkinter as tk
 from tkinter import filedialog
 
@@ -18,6 +18,7 @@ def addApp():
         label1.pack()
         drawEdges(filename)
         drawFeatures(filename)
+        detect_img_object(filename)
 
 
 def drawEdges(image):
@@ -40,6 +41,26 @@ def drawFeatures(image):
     cv2.drawKeypoints(img, keypoints, img_keypoints)
     cv2.imshow("Photo features", img)
 
+
+def detect_img_object(image):
+    img = cv2.imread(image)
+    edged = cv2.Canny(img, 10, 250)
+    (cnts, _) = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    for c in cnts:
+        peri = cv2.arcLength(c, True)
+        approx = cv2.approxPolyDP(c, 0.01 * peri, True)
+        cv2.drawContours(img, [approx], -1, (0, 255, 0), 2)
+    cv2.imshow("Output", img)
+
+    idx = 0
+    for c in cnts:
+        x, y, w, h = cv2.boundingRect(c)
+        if w > 50 and h > 50:
+            idx += 1
+            new_img = img[y:y + h, x:x + w]
+            cv2.imshow(str(idx) + '.png', new_img)
+    cv2.waitKey(0)
 
 # Синий экран
 canvas = tk.Canvas(root, height=300, width=300, bg="blue")
