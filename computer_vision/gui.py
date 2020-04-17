@@ -16,9 +16,9 @@ def addApp():
         apps.append(filename)
         label1 = tk.Label(frame, text=apps, bg="gray")
         label1.pack()
+        detect_img_object(filename)
         drawEdges(filename)
         drawFeatures(filename)
-        detect_img_object(filename)
 
 
 def drawEdges(image):
